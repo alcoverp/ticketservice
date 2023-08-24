@@ -15,8 +15,8 @@ import com.bharath.springcloud.repository.TicketRepository;
 @RestController
 @RequestMapping("api/v1/ticket")
 public class TicketController {
-	private final TicketRepository ticketRepository;
 	private static final String priceServiceURI = "http://localhost:9093/api/v1/price";
+	private final TicketRepository ticketRepository;
 
 	public TicketController(TicketRepository ticketRepository) {
 		this.ticketRepository = ticketRepository;
@@ -28,7 +28,7 @@ public class TicketController {
 		final PriceDto priceDto = restTemplate.getForObject(priceServiceURI + "/" + ticketCode, PriceDto.class);
 
 		assert priceDto != null;
-		final BigDecimal totalPrice =   BigDecimal.valueOf(numberOfTickets).multiply(priceDto.price());
+		final BigDecimal totalPrice = BigDecimal.valueOf(numberOfTickets).multiply(priceDto.price());
 		final Ticket ticket = new Ticket(ticketCode, numberOfTickets, totalPrice);
 
 		return ticketRepository.save(ticket);
